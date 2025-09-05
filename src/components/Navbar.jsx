@@ -7,7 +7,7 @@ export const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <FaGraduationCap className="text-blue-500 text-4xl" />
-          <span className="text-2xl font-bold">
+          <span className="text-2xl font-bold text-gray-800">
             Study<span className="text-blue-500">Pro</span>
           </span>
         </div>
