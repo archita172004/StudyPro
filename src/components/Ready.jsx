@@ -8,7 +8,7 @@ const Ready = () => {
           Ready to Share your knowledge
         </h4>
         <p className="text-lg md:text-xl text-gray-200 mb-10 leading-relaxed max-w-3xl mx-auto">
-          Join thousands of successful instructors on LearnPro and turn your
+          Join thousands of successful instructors on StudyPro and turn your
           passion into profit. We provide the tools and support you need to
           create engaging courses in any subject, from marketing to design and
           programming

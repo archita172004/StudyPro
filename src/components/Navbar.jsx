@@ -1,5 +1,5 @@
 import { FaGraduationCap } from "react-icons/fa";
-
+import { Link, NavLink } from "react-router-dom";
 export const Navbar = () => {
   return (
     <div className="w-full px-6 py-5">
@@ -14,27 +14,45 @@ export const Navbar = () => {
 
         {/* Links */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#" className="text-blue-500 font-semibold text-base">
-            Home
-          </a>
-          <a
-            href="#"
-            className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-base"
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "text-blue-500 font-semibold text-base"
+                : "text-gray-600 hover:text-blue-500 transition-colors duration-200 text-base"
+            }
+            to="/"
           >
-            Feature
-          </a>
-          <a
-            href="#"
-            className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-base"
+            Home
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "text-blue-500 font-semibold text-base"
+                : "text-gray-600 hover:text-blue-500 transition-colors duration-200 text-base"
+            }
+            to="/features"
+          >
+            Features
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "text-blue-500 font-semibold text-base"
+                : "text-gray-600 hover:text-blue-500 transition-colors duration-200 text-base"
+            }
+            to="/contact"
           >
             Contact Us
-          </a>
+          </NavLink>
 
           {/* Buttons */}
           <div className="flex items-center space-x-3 ml-4">
-            <button className="bg-blue-500 text-white px-6 py-2.5 rounded-lg text-base font-semibold hover:bg-blue-600 transition-colors duration-200 shadow-md">
+            <Link
+              to="/signup"
+              className="bg-blue-500 text-white px-6 py-2.5 rounded-lg text-base font-semibold hover:bg-blue-600 transition-colors duration-200 shadow-md"
+            >
               Register
-            </button>
+            </Link>
             <button className="text-blue-500 px-4 py-2.5 rounded-lg font-semibold text-base hover:bg-blue-50 transition-colors duration-200">
               Sign in
             </button>
