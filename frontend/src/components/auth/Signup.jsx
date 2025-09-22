@@ -78,15 +78,7 @@ const Signup = () => {
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-sm  text-gray-700">Avatar</label>
-              <select className="mt-1 w-full px-4 py-2 bg-gray-100  rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200">
-                <option className="text-gray-400">Marketing</option>
-                <option className="text-gray-400">Design</option>
-                <option className="text-gray-400">Engineering</option>
-                <option className="text-gray-400">Business</option>
-              </select>
-            </div>
+
             <div>
               <label className="block text-sm text-gray-700">
                 Current Education Level
