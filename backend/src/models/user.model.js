@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
@@ -36,12 +36,16 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 //saves the hashed password
-userSchema.pre("save", async function () {
-  if (!this.isModified("password")) {
+userSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password")) {
+      return next();
+    }
+    this.password = await bcrypt.hash(this.password, 10);
     return next();
+  } catch (err) {
+    return next(err);
   }
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 //compare hashed password

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import cokkieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 dotenv.config({
   path: "./.env",
@@ -26,6 +26,11 @@ app.use(
     extended: true,
   })
 );
-app.use(cokkieParser());
+app.use(cookieParser());
+
+//routes
+import routes from "./routes/auth.routes.js";
+
+app.use("/api/v1/user/auth", routes);
 
 export default app;
