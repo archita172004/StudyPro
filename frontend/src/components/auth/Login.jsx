@@ -1,10 +1,79 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaGraduationCap } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import bgImage from "../../assets/login3.jpg";
 
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "/",
+  withCredentials: true,
+});
+
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = formData;
+    if (!email || !password) {
+      toast.error("Please provide email and password");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Create the payload
+      const payload = {
+        email,
+        password,
+      };
+
+      const res = await api.post("/api/v1/user/auth/login", payload);
+
+      const ok =
+        (res && res.status >= 200 && res.status < 300) ||
+        (res.data && res.data.success);
+      if (ok) {
+        const text = res.data?.message || "Logged in successfully";
+        toast.success(text);
+        // Delay navigation so user can see the toast
+        timerRef.current = setTimeout(() => {
+          navigate("/");
+        }, 1400);
+      } else {
+        toast.error(res.data?.message || "Login failed");
+      }
+    } catch (err) {
+      const msg = err?.response?.data?.message || err.message || "Login failed";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center">
       {/* Background Image */}
@@ -38,12 +107,15 @@ const Login = () => {
           <p className="text-gray-600 text-center mb-6 text-xs">
             Enter your credentials to access your courses and continue teaching
           </p>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm text-gray-600">
                 Email Address
               </label>
               <input
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 type="email"
                 className="mt-1 w-full px-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 placeholder-gray-400"
                 placeholder="Email Address"
@@ -52,6 +124,9 @@ const Login = () => {
             <div>
               <label className="block text-sm text-gray-600">Password</label>
               <input
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 type="password"
                 className="mt-1 w-full px-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 placeholder-gray-400"
                 placeholder="Password"
@@ -73,9 +148,12 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold text-base hover:bg-blue-600 transition-colors duration-200 mt-2"
+              disabled={loading}
+              className={`w-full ${
+                loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
+              } text-white py-2 rounded-lg font-semibold text-base transition-colors duration-200 mt-2`}
             >
-              Sign in
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
           <div className="text-center mt-4 text-sm text-gray-600">
@@ -89,6 +167,9 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Toast container for notifications */}
+      <ToastContainer position="top-center" autoClose={1500} />
     </div>
   );
 };
